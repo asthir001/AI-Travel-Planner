@@ -1,15 +1,7 @@
-// ─── Itinerary Service ───────────────────────────────────────────────────────
-// Flow: Supabase cache → Groq AI itinerary → local fallback
-// Caches results in Supabase so repeated queries are instant
-//
-// AI Stack:
-//   Destination Suggestions: Groq AI (openai/gpt-oss-120b) — see grokService.js
-//   Itinerary Generation:    Groq AI (openai/gpt-oss-120b) → local template fallback
-//   Future:                  TripAdvisor Apify actors for enriched details
-//
-// DEPRECATED (Apify actors caused wrong data):
-//   Primary:  Apify actor "akash9078/ai-travel-planner" → Mistral Large
-//   Fallback: Apify actor "whole_yolk/personalized-tourist-planner" → Claude / OpenAI
+// ─── Itinerary Service ──────────────────────────────────────────────────────
+// Generates detailed hour-by-hour travel itineraries
+// Flow: Supabase cache → AI itinerary generation → local fallback
+// ────────────────────────────────────────────────────────────────────────────
 
 import { generateDynamicItinerary } from '../data/detailedItineraries';
 
@@ -36,7 +28,7 @@ class CacheError extends ItineraryError {
 }
 
 class GroqItineraryError extends ItineraryError {
-  constructor(message, details) { super(message, 'groq-ai (openai/gpt-oss-120b)', details); this.name = 'GroqItineraryError'; }
+  constructor(message, details) { super(message, 'ai-engine', details); this.name = 'GroqItineraryError'; }
 }
 
 class ConfigError extends ItineraryError {
@@ -137,7 +129,7 @@ async function writeCache(cacheKey, destination, fromCity, transport, duration, 
   }
 }
 
-// ─── Groq AI Itinerary Generator ────────────────────────────────────────────
+// ─── AI Itinerary Generator ─────────────────────────────────────────────────
 
 /**
  * @param {string} destination
@@ -150,7 +142,7 @@ async function writeCache(cacheKey, destination, fromCity, transport, duration, 
  */
 async function generateGroqItinerary(destination, fromCity, transport, numDays, vacationTypes, departureSlot, tripAdvisorData) {
   if (!GROQ_API_KEY) {
-    log('warn', 'VITE_GROQ_API_KEY not set — skipping Groq AI itinerary');
+    log('warn', 'VITE_GROQ_API_KEY not set — skipping AI itinerary');
     return null;
   }
 
@@ -247,7 +239,7 @@ Return ONLY valid JSON (no markdown, no explanation) with this exact structure:
 - Middle days: detailed sightseeing, local food, activities matching ${vtLabels}
 ${tripAdvisorData ? '- USE the TripAdvisor hotels, restaurants, and attractions provided in the system prompt' : ''}`;
 
-  log('ai', `Calling Groq AI for itinerary → ${destination} (${GROQ_MODEL})`);
+  log('ai', `Calling AI for itinerary → ${destination}`);
   log('request', `Prompt: ${numDays} days from ${fromCity} via ${transport}`);
 
   const t0 = performance.now();
@@ -266,7 +258,6 @@ ${tripAdvisorData ? '- USE the TripAdvisor hotels, restaurants, and attractions 
           { role: 'user', content: userPrompt },
         ],
         temperature: 0.6,
-        max_tokens: 4000,
         response_format: { type: 'json_object' },
       }),
     });
@@ -287,7 +278,7 @@ ${tripAdvisorData ? '- USE the TripAdvisor hotels, restaurants, and attractions 
       throw new GroqItineraryError('Empty response');
     }
 
-    log('ai', `Groq responded in ${elapsed}ms, tokens: ${data.usage?.total_tokens || '?'}`);
+    log('ai', `AI responded in ${elapsed}ms, tokens: ${data.usage?.total_tokens || '?'}`);
 
     // Parse JSON (handle markdown wrapping, extra text)
     let jsonStr = content.trim();
@@ -317,19 +308,15 @@ ${tripAdvisorData ? '- USE the TripAdvisor hotels, restaurants, and attractions 
         sum + d.timeline.filter(t => t.type === 'activity' || t.type === 'food').length, 0);
     }
 
-    log('success', `Groq AI itinerary: ${parsed.days.length} days, ${parsed.totalActivities} activities`);
+    log('success', `AI itinerary: ${parsed.days.length} days, ${parsed.totalActivities} activities`);
     return parsed;
   } catch (err) {
     if (err instanceof GroqItineraryError) throw err;
     const elapsed = (performance.now() - t0).toFixed(0);
-    log('error', `Groq AI itinerary failed (${elapsed}ms):`, err.message);
+    log('error', `AI itinerary generation failed (${elapsed}ms):`, err.message);
     throw new GroqItineraryError(err.message);
   }
 }
-
-// ─── Apify actors (DEPRECATED — replaced by Groq AI) ───────────────────────
-// Kept as comments for future TripAdvisor integration.
-// See git history for full Apify actor code.
 
 // ─── Markdown → Structured Itinerary Parser ─────────────────────────────────
 
@@ -598,7 +585,7 @@ function parseFallbackData(data, destination, fromCity, transport, numDays) {
 
 /**
  * Fetch a detailed itinerary for a destination.
- * Priority: Supabase cache → TripAdvisor + Groq AI → local template fallback
+ * Priority: Supabase cache → TripAdvisor + AI → local template fallback
  *
  * @param {object} dest - Destination object
  * @param {number} duration - Trip duration in days
@@ -638,8 +625,8 @@ export async function fetchItinerary(dest, duration, fromCity, transport, budget
     return { itinerary: cached.itinerary_data, source: `cache (${cached.source})` };
   }
 
-  // ── 2. Try Groq AI (with TripAdvisor data if available) ────────────────────
-  log('info', `Step 2/3 → Groq AI (openai/gpt-oss-120b)${hasTaData ? ' + TripAdvisor data' : ''}...`);
+  // ── 2. Try AI (with TripAdvisor data if available) ─────────────────────────
+  log('info', `Step 2/3 → AI itinerary generation${hasTaData ? ' + TripAdvisor data' : ''}...`);
   try {
     const groqItinerary = await generateGroqItinerary(dest.name, fromCity, transport, duration, vacationTypes, slotSuffix, tripAdvisorData || null);
     if (groqItinerary) {
@@ -648,12 +635,12 @@ export async function fetchItinerary(dest, duration, fromCity, transport, budget
       // Cache the AI-generated itinerary
       writeCache(cacheKey, dest.name, fromCity, transport, duration, groqItinerary, 'groq-ai').catch(() => {});
 
-      log('success', `ITINERARY READY → source: GROQ AI (${GROQ_MODEL}) (total: ${totalElapsed}ms)`);
+      log('success', `ITINERARY READY → source: AI (total: ${totalElapsed}ms)`);
       log('info', '═══════════════════════════════════════════════════════════\n');
       return { itinerary: groqItinerary, source: 'groq-ai' };
     }
   } catch (err) {
-    log('warn', `Groq AI failed: ${err.message}. Falling back to local generation.`);
+    log('warn', `AI failed: ${err.message}. Falling back to local generation.`);
   }
 
   // ── 3. Local template fallback ─────────────────────────────────────────────

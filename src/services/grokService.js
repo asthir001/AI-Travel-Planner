@@ -1,9 +1,6 @@
-// ─── Groq AI Service ────────────────────────────────────────────────────────
-// Uses Groq's inference API (OpenAI-compatible) to suggest travel destinations
-// based on user preferences: vacation type, location, transport, duration, month
-//
-// AI Engine: openai/gpt-oss-120b via Groq
-// Endpoint:  https://api.groq.com/openai/v1/chat/completions
+// ─── AI Destination Suggestion Service ──────────────────────────────────────
+// Suggests travel destinations based on user preferences
+// Uses AI inference for intelligent destination recommendations
 // ────────────────────────────────────────────────────────────────────────────
 
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
@@ -189,7 +186,7 @@ Return ONLY valid JSON, no markdown, no explanation. Use this exact structure:
 
 Suggest destinations that are perfect for a ${totalDays}-day ${vtLabels} trip from ${fromCity} in ${monthName}. Prioritize destinations reachable by ${transport}.`;
 
-  log('ai', `Calling Groq AI (${GROQ_MODEL})...`);
+  log('ai', `Calling AI for destination suggestions...`);
   log('request', `Prompt: ${vtLabels} trip from ${fromCity}, ${totalDays} days in ${monthName} via ${transport}`);
 
   const t0 = performance.now();
@@ -228,7 +225,7 @@ Suggest destinations that are perfect for a ${totalDays}-day ${vtLabels} trip fr
     throw new GroqAPIError('Groq returned empty response');
   }
 
-  log('ai', `Groq responded in ${elapsed}ms, model: ${GROQ_MODEL}, tokens: ${data.usage?.total_tokens || 'unknown'}`);
+  log('ai', `AI responded in ${elapsed}ms, tokens: ${data.usage?.total_tokens || 'unknown'}`);
 
   // Parse JSON from response (handle markdown wrapping, extra text, etc.)
   let parsed;
@@ -252,7 +249,7 @@ Suggest destinations that are perfect for a ${totalDays}-day ${vtLabels} trip fr
     throw new GroqAPIError('Groq response missing destinations array', { parsed });
   }
 
-  log('success', `Got ${parsed.destinations.length} destination suggestions from Groq AI`);
+  log('success', `Got ${parsed.destinations.length} destination suggestions`);
   parsed.destinations.forEach((d, i) => {
     log('info', `  ${i + 1}. ${d.emoji} ${d.name} (${d.state}) — ${d.whyNow || ''}`);
   });
@@ -264,7 +261,7 @@ Suggest destinations that are perfect for a ${totalDays}-day ${vtLabels} trip fr
 
 /**
  * Fetch AI-suggested destinations.
- * Flow: Supabase cache → Groq AI → empty fallback
+ * Flow: Supabase cache → AI → empty fallback
  *
  * @param {string[]} vacationTypes - e.g. ['Beaches & Coastal', 'Adventure']
  * @param {string} fromCity - user's starting city
@@ -281,7 +278,7 @@ export async function fetchDestinationSuggestions(vacationTypes, fromCity, trans
   log('info', `  From: ${fromCity} | Transport: ${transport}`);
   log('info', `  Duration: ${totalDays} days | Month: ${MONTH_NAMES[month]}`);
   log('info', `  Country: ${country}`);
-  log('ai', `  AI Engine: Groq → ${GROQ_MODEL}`);
+  log('ai', `  AI Engine: ready`);
   log('request', '═══════════════════════════════════════════════════');
 
   const cacheKey = buildSuggestionCacheKey(vacationTypes, fromCity, transport, totalDays, month, country);
@@ -294,8 +291,8 @@ export async function fetchDestinationSuggestions(vacationTypes, fromCity, trans
     return { destinations: cached, source: 'cache' };
   }
 
-  // Step 2: Call Groq AI
-  log('info', 'Step 2/2: Calling Groq AI for suggestions...');
+  // Step 2: Call AI
+  log('info', 'Step 2/2: Calling AI for suggestions...');
   try {
     const destinations = await callGroq(vacationTypes, fromCity, transport, totalDays, month, country);
 
@@ -303,7 +300,7 @@ export async function fetchDestinationSuggestions(vacationTypes, fromCity, trans
     writeSuggestionCache(cacheKey, destinations).catch(() => {});
 
     log('success', '═══════════════════════════════════════════════════');
-    log('success', `DONE — ${destinations.length} destinations from Groq AI (${GROQ_MODEL})`);
+    log('success', `DONE — ${destinations.length} AI-suggested destinations`);
     log('success', '═══════════════════════════════════════════════════');
 
     return { destinations, source: 'groq' };
@@ -312,14 +309,14 @@ export async function fetchDestinationSuggestions(vacationTypes, fromCity, trans
       log('warn', 'Groq API key not configured — returning empty suggestions');
       log('warn', 'Set VITE_GROQ_API_KEY in .env to enable AI destination suggestions');
     } else {
-      log('error', 'Groq AI failed:', err.message);
+      log('error', 'AI suggestion failed:', err.message);
     }
     return { destinations: [], source: 'error' };
   }
 }
 
 /**
- * Check if Groq AI is configured
+ * Check if AI is configured
  */
 export function isGrokConfigured() {
   return !!GROQ_API_KEY;

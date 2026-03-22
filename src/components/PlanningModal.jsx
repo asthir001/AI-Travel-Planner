@@ -779,7 +779,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
   const [loadingDest, setLoadingDest] = useState(null);
   const [itinerarySource, setItinerarySource] = useState(null);
 
-  // Groq AI state
+  // AI state
   const [aiDestinations, setAiDestinations] = useState([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiSource, setAiSource] = useState(null); // 'groq' | 'cache' | 'fallback' | 'error'
@@ -858,7 +858,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
     setDeparturePopup({ dest: destOrAiDest, isAiDest });
   }
 
-  // After user picks departure slot → fetch TripAdvisor → Groq AI → show itinerary
+  // After user picks departure slot → fetch TripAdvisor → AI → show itinerary
   async function handleDepartureSelected(slot) {
     const { dest: destOrAiDest, isAiDest } = departurePopup;
     const dest = isAiDest ? makeDestForAi(destOrAiDest) : destOrAiDest;
@@ -878,17 +878,17 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
         if (taResult.source === 'error') taResult = null;
       }
 
-      // Step 2: Pass TripAdvisor data + departure slot to Groq AI
+      // Step 2: Pass TripAdvisor data + departure slot to AI
       setLoadingStage('ai');
       const { itinerary, source } = await fetchItinerary(
-        dest, Math.min(totalDays, 5), city, transport, 'midrange', groupSize, formData.vacationTypes, slot, taResult,
+        dest, totalDays, city, transport, 'midrange', groupSize, formData.vacationTypes, slot, taResult,
       );
       setItinerarySource(source);
       setDetailModal({ dest, itinerary });
     } catch {
       // Fallback to local generation
       setLoadingStage('');
-      const itinerary = generateDynamicItinerary(dest, Math.min(totalDays, 5), city, transport);
+      const itinerary = generateDynamicItinerary(dest, totalDays, city, transport);
       setItinerarySource('local');
       setDetailModal({ dest, itinerary });
     } finally {
@@ -925,12 +925,12 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
     setLoadingDest(destId);
     try {
       const { itinerary, source } = await fetchItinerary(
-        dest, Math.min(totalDays, 5), city, transport, 'midrange', groupSize, formData.vacationTypes, 'morning', null,
+        dest, totalDays, city, transport, 'midrange', groupSize, formData.vacationTypes, 'morning', null,
       );
       setItinerarySource(source);
       setDetailModal({ dest, itinerary });
     } catch {
-      const itinerary = generateDynamicItinerary(dest, Math.min(totalDays, 5), city, transport);
+      const itinerary = generateDynamicItinerary(dest, totalDays, city, transport);
       setItinerarySource('local');
       setDetailModal({ dest, itinerary });
     } finally {
@@ -940,7 +940,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
 
   // For hardcoded destinations: compute stats
   function getDestStats(dest) {
-    const itin = generateDynamicItinerary(dest, Math.min(totalDays, 5), city, transport);
+    const itin = generateDynamicItinerary(dest, totalDays, city, transport);
     const actCount = itin.days.reduce((s, d) =>
       s + d.timeline.filter(t => t.type === 'activity').length, 0);
     return { actCount, destDays: itin.destinationDays, nights: itin.nights };
@@ -985,7 +985,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
                   <span className="text-xs text-gray-400">{aiDest.state}</span>
                   {i === 0 && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 font-semibold border border-amber-200">Top Pick</span>}
                   {aiSource === 'groq' && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-50 text-pink-600 font-semibold border border-pink-200">Groq AI</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-50 text-pink-600 font-semibold border border-pink-200">AI Assistant</span>
                   )}
                 </div>
                 <p className="text-gray-500 text-xs mt-0.5">{aiDest.tagline}</p>
@@ -1051,7 +1051,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
             {loadingDest === destId ? (
               <>
                 <span className="inline-block w-3.5 h-3.5 border-2 border-amber-400/40 border-t-amber-400 rounded-full animate-spin" />
-                {loadingStage === 'tripadvisor' ? 'Fetching from TripAdvisor...' : loadingStage === 'ai' ? 'AI is building your itinerary...' : 'Generating Itinerary...'}
+                {loadingStage === 'tripadvisor' ? 'Enhancing trip with TripAdvisor...' : loadingStage === 'ai' ? 'AI is building your itinerary...' : 'Generating Itinerary...'}
               </>
             ) : (
               <>
@@ -1173,7 +1173,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
         </h3>
         <p className="text-gray-500 text-sm mb-2">
           {useAi
-            ? `Suggested by Groq AI based on ${city}, ${VACATION_TYPES.find(v => v.id === activeVacType)?.label || ''} vibe & season`
+            ? `Suggested by AI based on ${city}, ${VACATION_TYPES.find(v => v.id === activeVacType)?.label || ''} vibe & season`
             : `Destinations for ${city || 'your city'} — ranked by season & distance`
           }
         </p>
@@ -1187,12 +1187,12 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
           }`}>
             <span className="text-sm">{aiSource === 'groq' ? '🤖' : aiSource === 'cache' ? '💾' : 'ℹ️'}</span>
             <p className="text-xs text-gray-600">
-              {aiSource === 'groq' && 'Destinations suggested by Groq AI (openai/gpt-oss-120b)'}
-              {aiSource === 'cache' && 'Destinations loaded from cache (originally from Groq AI)'}
+              {aiSource === 'groq' && 'Destinations curated by AI'}
+              {aiSource === 'cache' && 'Destinations loaded from cache'}
               {aiSource === 'fallback' && (
                 <>
                   {isGrokConfigured()
-                    ? 'Groq AI unavailable — showing curated destinations'
+                    ? 'AI Assistant unavailable — showing curated destinations'
                     : <>Set <code className="text-[10px] bg-gray-100 px-1 rounded">VITE_GROQ_API_KEY</code> in .env to enable AI suggestions</>
                   }
                 </>
@@ -1221,7 +1221,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
         {aiLoading && (
           <div className="text-center py-12">
             <div className="inline-block w-8 h-8 border-3 border-amber-200 border-t-amber-500 rounded-full animate-spin mb-4" />
-            <p className="text-gray-500 text-sm">Groq AI is finding the best destinations...</p>
+            <p className="text-gray-500 text-sm">AI is finding the best destinations...</p>
             <p className="text-gray-400 text-xs mt-1">Analyzing season, distance & your preferences</p>
           </div>
         )}
@@ -1387,7 +1387,7 @@ export default function PlanningModal({
               onBack={handleBack}
             />
           )}
-          {/* Step 4: AI Destination Results (Groq AI → fallback to hardcoded) */}
+          {/* Step 4: AI Destination Results */}
           {step === 4 && (
             <Step4Results
               formData={formData}

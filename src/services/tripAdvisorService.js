@@ -1,8 +1,6 @@
-// ─── TripAdvisor Enrichment Service ─────────────────────────────────────────
-// Uses Apify actor "maxcopell/tripadvisor" to fetch real hotels, restaurants,
-// and attractions for a destination. Results cached in Supabase.
-//
-// Flow: Supabase cache → Apify actor run → parse & cache → return
+// ─── TripAdvisor Service ────────────────────────────────────────────────────
+// Fetches real hotel, restaurant, and attraction data for destinations
+// Used to enhance AI-generated itineraries with verified place data
 // ────────────────────────────────────────────────────────────────────────────
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
@@ -150,7 +148,7 @@ async function runTripAdvisorActor(destination, currency = 'INR') {
     maxPhotosPerPlace: 0,
   };
 
-  log('ta', `Calling Apify actor "${ACTOR_ID}" for "${destination}"...`);
+  log('ta', `Fetching TripAdvisor data for "${destination}"...`);
   log('request', `Input: ${JSON.stringify({ query: destination, maxItemsPerQuery: 5, currency })}`);
 
   const t0 = performance.now();
@@ -300,7 +298,7 @@ function categorizeResults(items) {
 
 /**
  * Fetch TripAdvisor data for a destination.
- * Flow: Supabase cache → Apify actor → parse & cache → return
+ * Flow: Supabase cache → TripAdvisor API → parse & cache → return
  *
  * @param {string} destination - Destination name (e.g., "Gokarna")
  * @param {string} currency - Currency code (default: "INR")
@@ -322,8 +320,8 @@ export async function fetchTripAdvisorData(destination, currency = 'INR') {
     return { ...cached, source: 'cache' };
   }
 
-  // Step 2: Call Apify actor
-  log('info', 'Step 2/2: Calling Apify TripAdvisor actor...');
+  // Step 2: Fetch from TripAdvisor
+  log('info', 'Step 2/2: Fetching from TripAdvisor...');
   try {
     const rawItems = await runTripAdvisorActor(destination, currency);
     const { hotels, restaurants, attractions } = categorizeResults(rawItems);
