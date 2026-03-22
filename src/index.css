@@ -1,0 +1,270 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #c08a30;
+  --gold-light: #d4a24a;
+  --gold-dark: #9a6f20;
+  --coral: #dc4a4a;
+  --teal: #0d9488;
+  --teal-light: #14b8a6;
+  --orange: #d97706;
+  --bg: #f7f5f0;
+  --bg-warm: #faf8f4;
+  --card: #ffffff;
+  --card-hover: #fffef9;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-gold: rgba(192, 138, 48, 0.25);
+  --border-gold-hover: rgba(192, 138, 48, 0.5);
+  --text: #1a202c;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Custom scrollbar — light */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(192, 138, 48, 0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(192, 138, 48, 0.4); }
+
+/* ─── Calendar cells — compact ─────────────────────────────────────────────── */
+.cal-cell {
+  @apply relative rounded-lg transition-all duration-200 flex flex-col p-1 border border-transparent;
+  min-height: 48px;
+}
+
+.cal-cell-holiday {
+  background: rgba(220, 74, 74, 0.08);
+  border-color: rgba(220, 74, 74, 0.3);
+}
+
+.cal-cell-extended {
+  background: rgba(13, 148, 136, 0.08);
+  border-color: rgba(13, 148, 136, 0.3);
+  cursor: pointer;
+}
+
+.cal-cell-extended:hover {
+  background: rgba(13, 148, 136, 0.15);
+  border-color: rgba(13, 148, 136, 0.55);
+  transform: scale(1.04);
+  z-index: 10;
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.15);
+}
+
+.cal-cell-bridge {
+  background: rgba(217, 119, 6, 0.07);
+  border-color: rgba(217, 119, 6, 0.3);
+  cursor: pointer;
+}
+
+.cal-cell-bridge:hover {
+  background: rgba(217, 119, 6, 0.15);
+  border-color: rgba(217, 119, 6, 0.55);
+  transform: scale(1.04);
+  z-index: 10;
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.12);
+}
+
+.cal-cell-weekend {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.cal-cell-today {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 10px rgba(192, 138, 48, 0.15);
+}
+
+/* ─── Gradient text ─────────────────────────────────────────────────────────── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #c08a30 0%, #d4a24a 50%, #9a6f20 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glass card — light ────────────────────────────────────────────────────── */
+.glass-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-md);
+}
+
+/* ─── Modal backdrop — light ────────────────────────────────────────────────── */
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ─── Shimmer loading ───────────────────────────────────────────────────────── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.03) 25%,
+    rgba(0,0,0,0.06) 50%,
+    rgba(0,0,0,0.03) 75%
+  );
+  background-size: 200% auto;
+  animation: shimmer 1.5s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ─── Destination card ──────────────────────────────────────────────────────── */
+.dest-card {
+  @apply transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer;
+}
+
+.dest-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* ─── Step indicator ────────────────────────────────────────────────────────── */
+.step-dot {
+  @apply w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300;
+}
+
+.step-dot-active {
+  background: var(--gold);
+  color: white;
+  box-shadow: 0 0 14px rgba(192, 138, 48, 0.35);
+}
+
+.step-dot-done {
+  background: var(--teal);
+  color: white;
+}
+
+.step-dot-idle {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text-muted);
+}
+
+/* ─── Input style — light ───────────────────────────────────────────────────── */
+.inp {
+  @apply w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all;
+}
+
+.inp:focus {
+  background: #fffef9;
+}
+
+/* ─── Select style — light ──────────────────────────────────────────────────── */
+.sel {
+  @apply w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all appearance-none cursor-pointer;
+}
+
+.sel option {
+  background: white;
+  color: #1a202c;
+  padding: 8px;
+}
+
+/* ─── Pill button ───────────────────────────────────────────────────────────── */
+.pill-btn {
+  @apply px-4 py-2 rounded-full border text-sm font-medium transition-all duration-200 cursor-pointer;
+}
+
+.pill-btn-active {
+  border-color: var(--gold);
+  background: rgba(192, 138, 48, 0.1);
+  color: var(--gold-dark);
+}
+
+.pill-btn-inactive {
+  border-color: rgba(0,0,0,0.1);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.pill-btn-inactive:hover {
+  border-color: rgba(0,0,0,0.25);
+  color: var(--text);
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────────── */
+.animate-slide-in {
+  animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ─── Type card — light ─────────────────────────────────────────────────────── */
+.type-card {
+  @apply relative flex flex-col items-center justify-center rounded-2xl p-4 cursor-pointer transition-all duration-200 border text-center;
+  border-color: rgba(0,0,0,0.08);
+  background: #ffffff;
+  min-height: 100px;
+  box-shadow: var(--shadow-sm);
+}
+
+.type-card:hover {
+  border-color: rgba(0,0,0,0.15);
+  background: #fffef9;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.type-card-selected {
+  border-color: var(--gold) !important;
+  background: rgba(192, 138, 48, 0.06) !important;
+  box-shadow: 0 0 16px rgba(192, 138, 48, 0.12);
+}
+
+/* ─── Custom select arrow ───────────────────────────────────────────────────── */
+.sel-wrap {
+  @apply relative;
+}
+
+.sel-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  pointer-events: none;
+  font-size: 12px;
+}
