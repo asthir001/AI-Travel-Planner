@@ -1,6 +1,6 @@
 # AI Tour Planner
 
-An intelligent, calendar-based travel planning web app that helps users discover long weekends, public holidays, and bridge days — then generates detailed, AI-powered itineraries tailored to their preferences.
+An intelligent, calendar-based travel planning web app that helps users discover long weekends, public holidays, and bridge days — then generates detailed, AI-powered itineraries tailored to their preferences. Integrates Apify MCP server to enrich travel itineraries with real hotel, restaurant, and attraction data from TripAdvisor based on the user's destination. Leverages Supabase for caching to deliver instant results on repeat searches.
 
 ---
 
