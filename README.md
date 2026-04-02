@@ -14,7 +14,7 @@ An intelligent, calendar-based travel planning web app that helps users discover
 - **Past Date Blocking** — Users can view past long weekends but cannot plan trips for dates that have passed
 
 ### AI-Powered Destination Suggestions
-- Suggests **5 personalized destinations** based on:
+- Suggests **7 to 10 personalized destinations** based on:
   - Vacation type (beaches, mountains, adventure, heritage, wildlife, etc.)
   - Starting city
   - Preferred transport (train, flight, road, bus)

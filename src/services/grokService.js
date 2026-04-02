@@ -139,7 +139,7 @@ async function callGroq(vacationTypes, fromCity, transport, totalDays, month, co
   const monthName = MONTH_NAMES[month] || 'unknown';
   const vtLabels = vacationTypes.join(', ');
 
-  const systemPrompt = `You are an expert travel advisor. Given user preferences, suggest exactly 5 travel destinations.
+  const systemPrompt = `You are an expert travel advisor. Given user preferences, suggest 7 to 10 travel destinations, no more.
 
 IMPORTANT RULES:
 - Destinations must be reachable from the user's starting city via their preferred transport
@@ -176,7 +176,7 @@ Return ONLY valid JSON, no markdown, no explanation. Use this exact structure:
   ]
 }`;
 
-  const userPrompt = `Find 5 destinations for:
+  const userPrompt = `Find 7 to 10 destinations for:
 - Vacation types: ${vtLabels}
 - Starting from: ${fromCity}
 - Country: ${country}

@@ -1187,7 +1187,7 @@ function Step4Results({ formData, group, country, onClose, onBack, onAddToWishli
           }`}>
             <span className="text-sm">{aiSource === 'groq' ? '🤖' : aiSource === 'cache' ? '💾' : 'ℹ️'}</span>
             <p className="text-xs text-gray-600">
-              {aiSource === 'groq' && 'Destinations curated by AI'}
+              {aiSource === 'groq' && 'Itineraries curated by AI'}
               {aiSource === 'cache' && 'Destinations loaded from cache'}
               {aiSource === 'fallback' && (
                 <>

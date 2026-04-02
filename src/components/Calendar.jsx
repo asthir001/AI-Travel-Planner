@@ -78,7 +78,13 @@ export default function Calendar({
     }
   }
 
-  const longWeekendCount = extendedWeekends.filter(g => g.type !== 'weekend_holiday').length;
+  const monthLongWeekendCount = extendedWeekends.filter(g => {
+    if (g.type === 'weekend_holiday') return false;
+    const d = g.holidayDate || (g.holidayDates && g.holidayDates[0]);
+    if (!d) return false;
+    const [y, m] = d.split('-').map(Number);
+    return y === year && m - 1 === month;
+  }).length;
 
   return (
     <div className="glass-card rounded-2xl overflow-hidden">
@@ -99,10 +105,10 @@ export default function Calendar({
             {MONTHS[month]}
           </h2>
           <p className="text-gray-400 text-xs mt-0.5 font-light tracking-widest">{year}</p>
-          {longWeekendCount > 0 && (
+          {monthLongWeekendCount > 0 && (
             <p className="text-teal-600 text-[10px] mt-1 flex items-center justify-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-teal-500 inline-block" />
-              {longWeekendCount} long weekend{longWeekendCount > 1 ? 's' : ''} this month
+              {monthLongWeekendCount} long weekend{monthLongWeekendCount > 1 ? 's' : ''} this month
             </p>
           )}
         </div>
