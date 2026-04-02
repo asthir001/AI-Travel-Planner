@@ -1,0 +1,254 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" font-family="'Segoe UI', 'Inter', sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#00000018"/>
+    </filter>
+    <filter id="shadowDeep" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#00000022"/>
+    </filter>
+    <linearGradient id="headerGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="aiGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="cacheGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="apifyGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="uiGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F97316"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="holidayGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#14B8A6"/>
+      <stop offset="100%" stop-color="#0D9488"/>
+    </linearGradient>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#94A3B8"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#8B5CF6"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#10B981"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#F97316"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#14B8A6"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="820" rx="16" fill="#FAFAF9"/>
+
+  <!-- Title Bar -->
+  <rect x="0" y="0" width="1200" height="56" rx="16" fill="url(#headerGrad)"/>
+  <rect x="0" y="16" width="1200" height="40" fill="url(#headerGrad)"/>
+  <text x="600" y="36" text-anchor="middle" fill="white" font-size="18" font-weight="700" letter-spacing="1.5">AI TOUR PLANNER — SYSTEM ARCHITECTURE</text>
+
+  <!-- ==================== ROW 1: USER + UI ==================== -->
+
+  <!-- User -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="90" width="160" height="100" rx="14" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="120" y="126" text-anchor="middle" font-size="28">👤</text>
+    <text x="120" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#1E293B">User</text>
+    <text x="120" y="168" text-anchor="middle" font-size="9" fill="#64748B">Preferences &amp; Interactions</text>
+  </g>
+
+  <!-- React Frontend -->
+  <g filter="url(#shadowDeep)">
+    <rect x="280" y="80" width="280" height="120" rx="14" fill="white" stroke="#F97316" stroke-width="2"/>
+    <rect x="280" y="80" width="280" height="32" rx="14" fill="url(#uiGrad)"/>
+    <rect x="280" y="98" width="280" height="14" fill="url(#uiGrad)"/>
+    <text x="420" y="101" text-anchor="middle" fill="white" font-size="11" font-weight="700">PRESENTATION LAYER</text>
+    <text x="420" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#1E293B">React 18 + Vite SPA</text>
+    <text x="420" y="158" text-anchor="middle" font-size="9" fill="#64748B">Calendar.jsx · PlanningModal.jsx</text>
+    <text x="420" y="173" text-anchor="middle" font-size="9" fill="#64748B">WishlistSidebar.jsx · PDF Export</text>
+  </g>
+
+  <!-- Nager.Date API -->
+  <g filter="url(#shadow)">
+    <rect x="640" y="80" width="220" height="120" rx="14" fill="white" stroke="#14B8A6" stroke-width="2"/>
+    <rect x="640" y="80" width="220" height="32" rx="14" fill="url(#holidayGrad)"/>
+    <rect x="640" y="98" width="220" height="14" fill="url(#holidayGrad)"/>
+    <text x="750" y="101" text-anchor="middle" fill="white" font-size="11" font-weight="700">HOLIDAY DATA SOURCE</text>
+    <text x="750" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#1E293B">Nager.Date API</text>
+    <text x="750" y="158" text-anchor="middle" font-size="9" fill="#64748B">Public Holidays · 100+ Countries</text>
+    <text x="750" y="173" text-anchor="middle" font-size="9" fill="#64748B">State/Regional Holiday Support</text>
+  </g>
+
+  <!-- Holiday Utils -->
+  <g filter="url(#shadow)">
+    <rect x="940" y="80" width="220" height="120" rx="14" fill="white" stroke="#14B8A6" stroke-width="1.5"/>
+    <text x="1050" y="118" text-anchor="middle" font-size="22">🧮</text>
+    <text x="1050" y="142" text-anchor="middle" font-size="12" font-weight="700" fill="#1E293B">Holiday Algorithm</text>
+    <text x="1050" y="160" text-anchor="middle" font-size="9" fill="#64748B">Extended Weekend Detection</text>
+    <text x="1050" y="175" text-anchor="middle" font-size="9" fill="#64748B">Bridge Day · Mega-Break Analysis</text>
+  </g>
+
+  <!-- ==================== ROW 2: SERVICE LAYER ==================== -->
+
+  <!-- Service Layer Label -->
+  <rect x="40" y="230" width="1120" height="30" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="600" y="250" text-anchor="middle" font-size="10" font-weight="700" fill="#94A3B8" letter-spacing="2">SERVICE LAYER — CACHE-FIRST ARCHITECTURE</text>
+
+  <!-- Supabase Cache (center) -->
+  <g filter="url(#shadowDeep)">
+    <rect x="440" y="280" width="320" height="140" rx="14" fill="white" stroke="#10B981" stroke-width="2"/>
+    <rect x="440" y="280" width="320" height="32" rx="14" fill="url(#cacheGrad)"/>
+    <rect x="440" y="298" width="320" height="14" fill="url(#cacheGrad)"/>
+    <text x="600" y="301" text-anchor="middle" fill="white" font-size="11" font-weight="700">PERSISTENCE &amp; CACHING LAYER</text>
+    <text x="600" y="338" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B">Supabase (PostgreSQL)</text>
+    <text x="490" y="362" font-size="9" fill="#64748B">📦 destination_suggestions</text>
+    <text x="490" y="378" font-size="9" fill="#64748B">📦 itinerary_cache</text>
+    <text x="490" y="394" font-size="9" fill="#64748B">📦 tripadvisor_cache</text>
+    <text x="660" y="362" font-size="9" fill="#10B981" font-weight="600">Cache-Key Lookup</text>
+    <text x="660" y="378" font-size="9" fill="#10B981" font-weight="600">Non-blocking Writes</text>
+    <text x="660" y="394" font-size="9" fill="#10B981" font-weight="600">Instant Repeat Queries</text>
+  </g>
+
+  <!-- ==================== ROW 3: EXTERNAL SERVICES ==================== -->
+
+  <!-- Groq AI Engine -->
+  <g filter="url(#shadowDeep)">
+    <rect x="40" y="470" width="340" height="160" rx="14" fill="white" stroke="#8B5CF6" stroke-width="2"/>
+    <rect x="40" y="470" width="340" height="32" rx="14" fill="url(#aiGrad)"/>
+    <rect x="40" y="488" width="340" height="14" fill="url(#aiGrad)"/>
+    <text x="210" y="491" text-anchor="middle" fill="white" font-size="11" font-weight="700">AI INFERENCE ENGINE</text>
+    <text x="210" y="528" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B">Groq API (LLM)</text>
+    <text x="210" y="550" text-anchor="middle" font-size="10" fill="#64748B">Model: openai/gpt-oss-120b</text>
+    <text x="80" y="575" font-size="9" fill="#8B5CF6" font-weight="600">⚡ Phase 1:</text>
+    <text x="142" y="575" font-size="9" fill="#64748B">Destination Suggestions (7-10)</text>
+    <text x="80" y="593" font-size="9" fill="#8B5CF6" font-weight="600">⚡ Phase 2:</text>
+    <text x="142" y="593" font-size="9" fill="#64748B">Itinerary Generation (Hour-by-Hour)</text>
+    <text x="80" y="611" font-size="9" fill="#64748B">Structured JSON Output · Seasonal Context</text>
+  </g>
+
+  <!-- Apify MCP + TripAdvisor -->
+  <g filter="url(#shadowDeep)">
+    <rect x="440" y="470" width="320" height="160" rx="14" fill="white" stroke="#3B82F6" stroke-width="2"/>
+    <rect x="440" y="470" width="320" height="32" rx="14" fill="url(#apifyGrad)"/>
+    <rect x="440" y="488" width="320" height="14" fill="url(#apifyGrad)"/>
+    <text x="600" y="491" text-anchor="middle" fill="white" font-size="11" font-weight="700">DATA ENRICHMENT LAYER</text>
+    <text x="600" y="528" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B">Apify MCP → TripAdvisor</text>
+    <text x="480" y="575" font-size="9" fill="#3B82F6" font-weight="600">🏨 Hotels</text>
+    <text x="540" y="575" font-size="9" fill="#64748B">— Ratings, Amenities, Price</text>
+    <text x="480" y="593" font-size="9" fill="#3B82F6" font-weight="600">🍽️ Restaurants</text>
+    <text x="555" y="593" font-size="9" fill="#64748B">— Cuisine, Meal Types</text>
+    <text x="480" y="611" font-size="9" fill="#3B82F6" font-weight="600">🎯 Attractions</text>
+    <text x="553" y="611" font-size="9" fill="#64748B">— Categories, Reviews</text>
+  </g>
+
+  <!-- Output / PDF -->
+  <g filter="url(#shadowDeep)">
+    <rect x="820" y="470" width="340" height="160" rx="14" fill="white" stroke="#F59E0B" stroke-width="2"/>
+    <rect x="820" y="470" width="340" height="32" rx="14" fill="url(#headerGrad)"/>
+    <rect x="820" y="488" width="340" height="14" fill="url(#headerGrad)"/>
+    <text x="990" y="491" text-anchor="middle" fill="white" font-size="11" font-weight="700">OUTPUT &amp; DELIVERY</text>
+    <text x="990" y="528" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B">Rendered Itinerary</text>
+    <text x="860" y="555" font-size="9" fill="#D97706" font-weight="600">📋 Day-by-Day Timeline</text>
+    <text x="860" y="573" font-size="9" fill="#D97706" font-weight="600">📍 Real Place Names (TripAdvisor)</text>
+    <text x="860" y="591" font-size="9" fill="#D97706" font-weight="600">📄 PDF Export (Browser-native)</text>
+    <text x="860" y="609" font-size="9" fill="#D97706" font-weight="600">❤️ Wishlist Save</text>
+  </g>
+
+  <!-- ==================== FLOW ARROWS ==================== -->
+
+  <!-- User → React -->
+  <line x1="200" y1="140" x2="270" y2="140" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrowGray)" stroke-dasharray="6,3"/>
+  <text x="230" y="132" text-anchor="middle" font-size="8" fill="#94A3B8" font-weight="600">INPUT</text>
+
+  <!-- React → Nager.Date -->
+  <line x1="560" y1="140" x2="630" y2="140" stroke="#14B8A6" stroke-width="2" marker-end="url(#arrowTeal)"/>
+  <text x="595" y="132" text-anchor="middle" font-size="8" fill="#14B8A6" font-weight="600">REST</text>
+
+  <!-- Nager.Date → Holiday Utils -->
+  <line x1="860" y1="140" x2="930" y2="140" stroke="#14B8A6" stroke-width="2" marker-end="url(#arrowTeal)"/>
+
+  <!-- Holiday Utils → React (analyzed weekends fed back to calendar) -->
+  <path d="M1050,200 L1050,215 L420,215 L420,200" stroke="#14B8A6" stroke-width="2" fill="none" marker-end="url(#arrowTeal)"/>
+  <text x="750" y="226" text-anchor="middle" font-size="8" fill="#0D9488" font-weight="700">ANALYZED WEEKENDS</text>
+
+  <!-- React → Supabase (cache check) -->
+  <path d="M420,200 L420,230 L500,230 L500,272" stroke="#10B981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+
+  <text x="456" y="227" text-anchor="middle" font-size="8" fill="#10B981" font-weight="700">CACHE CHECK</text>
+
+  <!-- Supabase → Groq (cache miss) -->
+  <path d="M480,420 L480,440 L210,440 L210,462" stroke="#8B5CF6" stroke-width="2" fill="none" marker-end="url(#arrowPurple)" stroke-dasharray="6,3"/>
+  <rect x="300" y="432" width="80" height="16" rx="4" fill="#F5F3FF"/>
+  <text x="340" y="443" text-anchor="middle" font-size="8" fill="#8B5CF6" font-weight="700">CACHE MISS</text>
+
+  <!-- Groq → Supabase (write back) -->
+  <path d="M300,470 L300,450 L550,450 L550,420" stroke="#10B981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <rect x="360" y="446" width="120" height="16" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="0.5"/>
+  <text x="420" y="457" text-anchor="middle" font-size="8" fill="#10B981" font-weight="700">ASYNC WRITE-BACK</text>
+
+  <!-- Supabase → Apify (cache miss for TripAdvisor) -->
+  <path d="M680,420 L680,440 L600,440 L600,462" stroke="#3B82F6" stroke-width="2" fill="none" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+  <rect x="628" y="432" width="80" height="16" rx="4" fill="#EFF6FF"/>
+  <text x="668" y="443" text-anchor="middle" font-size="8" fill="#3B82F6" font-weight="700">CACHE MISS</text>
+
+  <!-- Apify → Supabase (write back) -->
+  <path d="M720,470 L720,440 L700,440 L700,420" stroke="#10B981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <rect x="725" y="432" width="90" height="16" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="0.5"/>
+  <text x="770" y="443" text-anchor="middle" font-size="8" fill="#10B981" font-weight="700">WRITE-BACK</text>
+
+  <!-- Apify → Groq (enrichment injection) -->
+  <line x1="440" y1="550" x2="388" y2="550" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="416" y="542" text-anchor="middle" font-size="7" fill="#3B82F6" font-weight="600">ENRICH</text>
+
+  <!-- Groq → Output -->
+  <path d="M380,570 L400,570 L400,690 L990,690 L990,638" stroke="#8B5CF6" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <rect x="620" y="682" width="120" height="16" rx="4" fill="#F5F3FF"/>
+  <text x="680" y="693" text-anchor="middle" font-size="8" fill="#8B5CF6" font-weight="700">GENERATED ITINERARY</text>
+
+  <!-- Supabase → React (cache hit) -->
+  <path d="M600,280 L600,260 L420,260 L420,200" stroke="#10B981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <rect x="470" y="252" width="70" height="16" rx="4" fill="#ECFDF5"/>
+  <text x="505" y="263" text-anchor="middle" font-size="8" fill="#10B981" font-weight="700">CACHE HIT</text>
+
+  <!-- Output → React (response) -->
+  <path d="M990,470 L990,210 L568,210 L568,200" stroke="#F97316" stroke-width="2" fill="none" marker-end="url(#arrowOrange)"/>
+  <text x="950" y="363" text-anchor="middle" font-size="8" fill="#F97316" font-weight="700">RENDER TO UI</text>
+
+  <!-- ==================== FLOW LEGEND ==================== -->
+
+  <rect x="40" y="720" width="1120" height="80" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="80" y="745" font-size="10" font-weight="700" fill="#475569">DATA FLOW LEGEND</text>
+
+  <!-- Legend items -->
+  <line x1="80" y1="765" x2="115" y2="765" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="122" y="769" font-size="9" fill="#64748B">User Input</text>
+
+  <line x1="220" y1="765" x2="255" y2="765" stroke="#10B981" stroke-width="2"/>
+  <text x="262" y="769" font-size="9" fill="#64748B">Cache Hit / Write-back</text>
+
+  <line x1="400" y1="765" x2="435" y2="765" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="442" y="769" font-size="9" fill="#64748B">Cache Miss → AI Call</text>
+
+  <line x1="580" y1="765" x2="615" y2="765" stroke="#3B82F6" stroke-width="2"/>
+  <text x="622" y="769" font-size="9" fill="#64748B">TripAdvisor Enrichment</text>
+
+  <line x1="770" y1="765" x2="805" y2="765" stroke="#F97316" stroke-width="2"/>
+  <text x="812" y="769" font-size="9" fill="#64748B">Response to UI</text>
+
+  <line x1="920" y1="765" x2="955" y2="765" stroke="#14B8A6" stroke-width="2"/>
+  <text x="962" y="769" font-size="9" fill="#64748B">Holiday Data Pipeline</text>
+
+  <!-- Footer -->
+  <text x="600" y="812" text-anchor="middle" font-size="8" fill="#94A3B8">AI Tour Planner · github.com/asthir001/AI-Travel-Planner · Cache-First · AI-Enriched · Real-Time Holiday Intelligence</text>
+</svg>
